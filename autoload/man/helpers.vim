@@ -66,19 +66,24 @@ endfunction
 " man#helpers#load_manpage_text {{{1
 
 function! man#helpers#load_manpage_text(page, section)
+  echom 'man#helpers#load_manpage_text: entering'
   setlocal modifiable
   silent keepj norm! 1GdG
   let $MANWIDTH = man#helpers#manwidth()
   silent exec 'r!/usr/bin/man '.man#helpers#get_cmd_arg(a:section, a:page). ' 2>/dev/null | col -b'
+  echom 'man#helpers#load_manpage_text: still alive'
   call s:remove_blank_lines_from_top_and_bottom()
+  echom 'man#helpers#load_manpage_text: dead'
   setlocal filetype=man
   setlocal nomodifiable
 endfunction
 
 function! s:remove_blank_lines_from_top_and_bottom()
+  echom 's:remove_blank_lines_from_top_and_bottom: entering'
   while getline(1) =~ '^\s*$'
     silent keepj norm! ggdd
   endwhile
+  echom 's:remove_blank_lines_from_top_and_bottom: dead'
   while getline('$') =~ '^\s*$'
     silent keepj norm! Gdd
   endwhile

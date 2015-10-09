@@ -14,6 +14,7 @@ let s:man_tag_depth = 0
 " man#get_page {{{1
 
 function! man#get_page(split_type, ...)
+  echom 'man#get_page: a:0: ' . a:0
   if a:0 == 0
     call s:handle_nroff_file_or_error(a:split_type)
     return
@@ -25,6 +26,7 @@ function! man#get_page(split_type, ...)
     let page = a:2
   endif
 
+  echom 'man#get_page: sect: "' . sect . '", page: "' . page . '"'
   if sect !=# '' && !s:manpage_exists(sect, page)
     let sect = ''
   endif
@@ -36,12 +38,17 @@ function! man#get_page(split_type, ...)
   call s:update_man_tag_variables()
   call s:get_new_or_existing_man_window(a:split_type)
   call man#helpers#set_manpage_buffer_name(page, sect)
+  echom 'man#get_page: still alive'
   call man#helpers#load_manpage_text(page, sect)
+  echom 'man#get_page: dead'
 endfunction
 
 function! s:manpage_exists(sect, page)
+  echom 's:manpage_exists: sect: "' . a:sect . '", page: "' . a:page . '"'
   let find_arg = man#helpers#find_arg()
+  echom 's:manpage_exists: find_arg: "' . find_arg . '"'
   let where = system('/usr/bin/man '.find_arg.' '.man#helpers#get_cmd_arg(a:sect, a:page))
+  echom 's:manpage_exists: where: "' . where . '"'
   if where !~# '^\s*/'
     " result does not look like a file path
     return 0
@@ -101,6 +108,7 @@ function! man#get_page_from_cword(split_type, cnt)
     let page = expand('<cword>')
     let &l:iskeyword = old_isk
   endif
+  echom 'man#get_page_from_cword: sect: "' . sect . '", page: "' . page . '"'
   call man#get_page(a:split_type, sect, page)
 endfunction
 
