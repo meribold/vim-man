@@ -45,6 +45,9 @@ endfunction
 
 function! s:manpage_exists(sect, page)
   echom 's:manpage_exists: sect: "' . a:sect . '", page: "' . a:page . '"'
+  if a:page ==# ''
+    return 0
+  endif
   let find_arg = man#helpers#find_arg()
   echom 's:manpage_exists: find_arg: "' . find_arg . '"'
   let where = system('/usr/bin/man '.find_arg.' '.man#helpers#get_cmd_arg(a:sect, a:page))

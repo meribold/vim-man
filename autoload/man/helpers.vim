@@ -80,11 +80,11 @@ endfunction
 
 function! s:remove_blank_lines_from_top_and_bottom()
   echom 's:remove_blank_lines_from_top_and_bottom: entering'
-  while getline(1) =~ '^\s*$'
+  while line('$') > 1 && getline(1) =~ '^\s*$'
     silent keepj norm! ggdd
   endwhile
   echom 's:remove_blank_lines_from_top_and_bottom: dead'
-  while getline('$') =~ '^\s*$'
+  while line('$') > 1 && getline('$') =~ '^\s*$'
     silent keepj norm! Gdd
   endwhile
   silent keepj norm! gg
